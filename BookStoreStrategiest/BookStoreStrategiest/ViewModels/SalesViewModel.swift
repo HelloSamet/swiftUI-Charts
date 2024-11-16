@@ -45,7 +45,20 @@ class SalesViewModel: ObservableObject {
         return calculateMedian(salesData: salesData) ?? 0
     }
     
+    var totalSalesPerCategory: [(category: BookCategory, sales: Int)] {
+        let salesByCategory = salesGroupedByCategory(sales: salesData)
+        let totalSalesPerCategory = totalSalesPerCategory(salesByCategory: salesByCategory)
+        return totalSalesPerCategory.sorted { $0.sales > $1.sales }
+    }
     
+    var bestSellingCategory: (category: BookCategory, sales: Int)? {
+        totalSalesPerCategory.max { $0.sales < $1.sales }
+    }
+    
+    
+    func fetchSalesData() {
+        salesData = Sale.threeMonthsExamples()
+    }
     
     func salesGroupedByWeek(sales: [Sale]) -> [Date: [Sale]] {
         var salesByWeek: [Date: [Sale]] = [:]
@@ -117,6 +130,33 @@ class SalesViewModel: ObservableObject {
             let middleIndex = count / 2
             return Double(quantities[middleIndex])
         }
+    }
+    
+    // Category stats
+    
+    func salesGroupedByCategory(sales: [Sale]) -> [BookCategory: [Sale]] {
+        var salesByCategory: [BookCategory: [Sale]] = [:]
+        
+        for sale in sales {
+            if salesByCategory[sale.book.category] != nil {
+                salesByCategory[sale.book.category]!.append(sale)
+            } else {
+                salesByCategory[sale.book.category] = [sale]
+            }
+        }
+        
+        return salesByCategory
+    }
+    
+    func totalSalesPerCategory(salesByCategory: [BookCategory: [Sale]]) -> [(category: BookCategory, sales: Int)] {
+        var totalSales: [(category: BookCategory, sales: Int)] = []
+        
+        for (category, sales) in salesByCategory {
+            let totalQuantityForCategory = sales.reduce(0) { $0 + $1.quantity }
+            totalSales.append((category: category, sales: totalQuantityForCategory))
+        }
+        
+        return totalSales
     }
     
     static var preview: SalesViewModel {
