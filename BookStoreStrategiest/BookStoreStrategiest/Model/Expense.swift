@@ -8,36 +8,32 @@
 import Foundation
 
 struct Expense: Identifiable {
-    
     let id: UUID = UUID()
     let title: String
     let category: ExpenseCategory
     let amount: Double
     let expenseDate: Date
     
-    static var example: Expense {
-        Expense(title: "Rent", category: .fixed, amount: 2000, expenseDate: Date(timeIntervalSinceNow: -7_200_000))
-    }
     
-    static var examples: [Expense] = [
+    static var examples = [
         Expense(title: "Rent", category: .fixed, amount: 2000, expenseDate: Date(timeIntervalSinceNow: -7_200_000)),
-        Expense(title: "Electricity", category: .variable, amount: 150, expenseDate: Date(timeIntervalSinceNow: -5_200_000)),
-        Expense(title: "Groceries", category: .variable, amount: 300, expenseDate: Date(timeIntervalSinceNow: -3_200_000)),
-        Expense(title: "Internet", category: .fixed, amount: 60, expenseDate: Date(timeIntervalSinceNow: -2_500_000)),
-        Expense(title: "Transportation", category: .variable, amount: 100, expenseDate: Date(timeIntervalSinceNow: -1_800_000)),
-        Expense(title: "Gym Membership", category: .fixed, amount: 50, expenseDate: Date(timeIntervalSinceNow: -1_200_000)),
-        Expense(title: "Dining Out", category: .variable, amount: 75, expenseDate: Date(timeIntervalSinceNow: -900_000))
+        Expense(title: "Salaries", category: .fixed, amount: 5000, expenseDate: Date(timeIntervalSinceNow: -14_400_000)),
+        Expense(title: "Utilities", category: .fixed, amount: 600, expenseDate: Date(timeIntervalSinceNow: -21_600_000)),
+        Expense(title: "Marketing", category: .variable, amount: 1000, expenseDate: Date(timeIntervalSinceNow: -28_800_000)),
+        Expense(title: "Inventory", category: .variable, amount: 3000, expenseDate: Date(timeIntervalSinceNow: -36_000_000)),
+        Expense(title: "Maintenance", category: .fixed, amount: 500, expenseDate: Date(timeIntervalSinceNow: -43_200_000)),
+        Expense(title: "Equipment", category: .variable, amount: 1500, expenseDate: Date(timeIntervalSinceNow: -50_400_000))
     ]
     
-    static var yearExample: [Expense] = {
+    static var yearExamples: [Expense] = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
         var expenses = [Expense]()
-        
+
         for month in 1...12 {
             for _ in 1...10 {
                 let randomDay = Int.random(in: 1...28)
-                let date = formatter.date(from: "2024/\(month)/\(randomDay)")!
+                let date = formatter.date(from: "2023/\(month)/\(randomDay)")!
                 let category: ExpenseCategory = Bool.random() ? .fixed : .variable
                 let title = category == .fixed ? "Rent" : "Supplies"
                 let amount: Double = category == .fixed ? 2000 : Double.random(in: 100...500)
@@ -46,9 +42,7 @@ struct Expense: Identifiable {
         }
         return expenses
     }()
-        
 }
-
 
 enum ExpenseCategory {
     case fixed
@@ -56,8 +50,10 @@ enum ExpenseCategory {
     
     var displayName: String {
         switch self {
-        case .fixed: return "Fixed"
-        case .variable: return "Variable"
+            case .fixed:
+                "Fixed"
+            case .variable:
+                "Variable"
         }
     }
 }

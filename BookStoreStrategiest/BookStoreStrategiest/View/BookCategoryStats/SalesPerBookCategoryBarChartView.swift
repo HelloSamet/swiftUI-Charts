@@ -22,13 +22,17 @@ struct SalesPerBookCategoryBarChartView: View {
                 })
             
             
-            .cornerRadius(5)
-            .opacity(salesViewModel.bestSellingCategory?.category
-                     == data.category ? 1 : 0.3)
-            .foregroundStyle(by: .value("Category", data.category.displayName))
+                .cornerRadius(5)
+                .opacity(salesViewModel.bestSellingCategory?.category
+                         == data.category ? 1 : 0.3)
+                .foregroundStyle(by: .value("Category", data.category.displayName))
             
         }.aspectRatio(1, contentMode: .fit)
             .chartLegend(.hidden)
+            .chartForegroundStyleScale([BookCategory.fiction.displayName: .purple,                               BookCategory.business.displayName: .cyan,
+                                        BookCategory.children.displayName: .yellow,
+                                        BookCategory.computerScience.displayName: .indigo
+                                       ])
     }
 }
 
